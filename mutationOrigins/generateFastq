@@ -1,0 +1,191 @@
+#!/usr/bin/env python
+
+# The purpose of this script is to create two fastq files that
+# contain only those chunks of DNA that are of particular interest.
+
+def runArgparse():
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--indir', '-i', required=True, type=str, help='Specifies the input directory containing the input fastq files')
+    parser.add_argument('--outdir', '-o', required=True, type=str, help='Specifies the output directory where the analysis should be put')
+    parser.add_argument('--autogetsamples', '-a', action='store_true', help='This will try and automatically grab and sort all files in a specified input directory so they dont need to be manually specified. Samples should fit the pattern x1.fastq (r1) and x2.fastq (r2) where x can be any string.')
+
+    args = parser.parse_args()
+
+    return args.indir, args.outdir, args.autogetsamples
+
+def autogetSamples(inputDir):
+    print('Parsing Samples...')
+    # this will attempt to automatically generate r1/r2 pairs
+    from glob import glob as g
+    from os.path import split as s
+    readList={}
+    r1List = g('%s/*1.fastq' % (inputDir)) # get all r1.fastq
+    
+    for r1 in r1List:
+        r1 = s(r1)[1] # trim off dir 
+        r2 = r1.rstrip('1.fastq') + '2.fastq'
+        readList[r1] = r2
+
+    return readList
+
+def searchFastq(indir, outdir, r1, r2, wtSeq, mutSeq):
+    import itertools
+    from Bio.Seq import Seq
+    position = 1 
+    plus = '+' 
+
+    r1wt = '%s/wt%s' %  (outdir, r1)
+    r2wt = '%s/wt%s' %  (outdir, r2)
+    r1mut = '%s/mut%s' %  (outdir, r1)
+    r2mut = '%s/mut%s' %  (outdir, r2)
+
+    #write results to a new fastq file
+    targetr1wt = open(r1wt, 'w')
+    targetr2wt = open(r2wt, 'w')
+    targetr1mut = open(r1mut, 'w')
+    targetr2mut = open(r2mut, 'w')
+
+    with open(indir+'/'+r1, 'r') as R1: 
+        with open(indir+'/'+r2, 'r') as R2: 
+            shouldInclude = False
+
+            #in python2 zip reads everything into memory
+            #itertools.izip is iterative, and reads line by line
+            for line1, line2 in itertools.izip(R1, R2):
+                if position == 1:
+                    header1 = line1.rstrip('\n')
+                    header2 = line2.rstrip('\n')
+                    position += 1
+                elif position == 2:
+                    seq1 = line1.rstrip('\n') #It is necessary to first strip, or \n will count as a char
+                    seq2 = line2.rstrip('\n')
+                    #substrings = generateSubstrings(seq1, sequences)
+                    #shouldInclude = checkIfTarget(substrings, sequences)
+                    seqPresence = checkSeqPresence(seq1, wtSeq, mutSeq)
+
+                    position += 1
+                elif position == 3:
+                    position += 1
+                elif position == 4:
+                    quality1 = line1.rstrip('\n')
+                    quality2 = line2.rstrip('\n')
+                    position = 1 
+                    
+                    if seqPresence == 'wt':
+                        targetr1wt.write(header1 + '\n' + seq1 + '\n' + plus + '\n' + quality1 + '\n')
+                        targetr2wt.write(header2 + '\n' + seq2 + '\n' + plus + '\n' + quality2 + '\n')
+                    if seqPresence == 'mut':
+                        targetr1mut.write(header1 + '\n' + seq1 + '\n' + plus + '\n' + quality1 + '\n')
+                        targetr2mut.write(header2 + '\n' + seq2 + '\n' + plus + '\n' + quality2 + '\n')
+                    else:
+                        pass
+    targetr1wt.close()
+    targetr2wt.close()
+    targetr1mut.close()
+    targetr2mut.close()
+                    
+def generateSubstrings(seq, sequences):
+    n = len(sequences[0])
+    return [seq[i:i+n] for i in range(0, len(seq)-n+1)]
+
+def checkIfTarget(substrings, sequences):
+    from Levenshtein import distance
+    status = False 
+
+    for i in substrings:
+        for j in sequences:
+            if distance (i,j) < 1:
+                status = True
+            else:
+                pass
+
+    return status
+def checkSeqPresence(seq1, wtSeq, mutSeq):
+    status = False
+    trimmed = seq1[3:-4] # trying a 10bp seq
+    for i in wtSeq:
+        if i in seq1:
+            status = 'wt'
+            return status
+    for i in mutSeq:
+        if i in seq1:
+            status = 'mut'
+            return status
+
+if __name__ == '__main__':
+    # this includes rev complements
+    wtSeq = [
+    'AGGCCACTAGTCTATCA',
+    'AAGACCGTGCCACCCAG',
+    'AGTAGGAGTGACATAGA',
+    'GAGTGACATAGAAGATA',
+    'TATATCCATAGAAGATA',
+    'CTACAAAGCTCCAGAAT',
+    'GCATCAGCCGGATATCC',
+    'TCTCTCACCTCCTCCAT',
+    'ACACAACATACATACAA',
+    'GCTCCTCAGGGGCCTGC',
+    'CACTGCCCGCTGCTCTT',
+    'GCTGCTCTTGGTCAAGA',
+    'GGCGTAGGACGCCCAGT',
+    'TAACATTGCTCTGATGT',
+    'ATCTAGAAGCTGCCATC',
+    'TGATAGACTAGTGGCCT',
+    'CTGGGTGGCACGGTCTT',
+    'TCTATGTCACTCCTACT',
+    'TATCTTCTATGTCACTC',
+    'TATCTTCTATGGATATA',
+    'ATTCTGGAGCTTTGTAG',
+    'GGATATCCGGCTGATGC',
+    'ATGGAGGAGGTGAGAGA',
+    'TTGTATGTATGTTGTGT',
+    'GCAGGCCCCTGAGGAGC',
+    'AAGAGCAGCGGGCAGTG',
+    'TCTTGACCAAGAGCAGC',
+    'ACTGGGCGTCCTACGCC',
+    'ACATCAGAGCAATGTTA',
+    'GATGGCAGCTTCTAGAT']
+    
+    mutSeq = [
+    'AGGCCACTCGTCTATCA',
+    'AAGACCGTACCACCCAG',
+    'AGTAGGAGCGACATAGA',
+    'GAGTGACACAGAAGATA',
+    'TATATCCACAGAAGATA',
+    'CTACAAAGTTCCAGAAT',
+    'GCATCAGCTGGATATCC',
+    'TCTCTCACTTCCTCCAT',
+    'ACACAACACACATACAA',
+    'GCTCCTCAAGGGCCTGC',
+    'CACTGCCCACTGCTCTT',
+    'GCTGCTCTCGGTCAAGA',
+    'GGCGTAGGGCGCCCAGT',
+    'TAACATTGTTCTGATGT',
+    'ATCTAGAACCTGCCATC',
+    'TGATAGACGAGTGGCCT',
+    'CTGGGTGGTACGGTCTT',
+    'TCTATGTCGCTCCTACT',
+    'TATCTTCTGTGTCACTC',
+    'TATCTTCTGTGGATATA',
+    'ATTCTGGAACTTTGTAG',
+    'GGATATCCAGCTGATGC',
+    'ATGGAGGAAGTGAGAGA',
+    'TTGTATGTGTGTTGTGT',
+    'GCAGGCCCTTGAGGAGC',
+    'AAGAGCAGTGGGCAGTG',
+    'TCTTGACCGAGAGCAGC',
+    'ACTGGGCGCCCTACGCC',
+    'ACATCAGAACAATGTTA',
+    'GATGGCAGGTTCTAGAT']
+
+    indir, outdir, autoget = runArgparse()
+
+    if autoget:
+        sampleList = autogetSamples(indir)
+        print sampleList
+
+    for sample in sampleList:
+        searchFastq(indir, outdir, sample, sampleList[sample], wtSeq, mutSeq)
+
+

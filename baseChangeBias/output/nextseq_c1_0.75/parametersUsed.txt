@@ -1,0 +1,8 @@
+Input File Location: /vol3/home/liggettl/sequencingData/8.3.2016/unzipped
+Read 1: C1-R1.fastq
+Read 2: C1-R2.fastq
+Distance Stringency: 1
+Variant Threshold: 0.750000
+Supporting Reads: 5
+DP Filter: 500
+AO Filter: 5

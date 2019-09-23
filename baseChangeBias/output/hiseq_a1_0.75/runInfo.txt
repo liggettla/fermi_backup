@@ -1,0 +1,1 @@
+The purpose of this run is to reanalyze the data from 3/21/2016 using the most up to date conditions in order to then go look for variants that are homo/het and within the same capture to possibly understand the current limit of detection.

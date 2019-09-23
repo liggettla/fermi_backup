@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+#########
+# fermi #
+#########
+#module load vt
+#module load bwa
+
+###############
+# Run Locally #
+###############
+# this will avoid aligning
+# ./getInput -i /media/alex/Extra/Dropbox/Code/FERMI/testInput -o /media/alex/Extra/Dropbox/Code/FERMI/testOutput -q 50 -e -u 1 -v 0.8 -r 5 -f 5 -a -n 'This is some information.'
+
+# laptop 
+#getInput -exagw -q 120 -u 1 -v 0.75 -r 5 -f 5 -i /media/alex/Extra/Dropbox/Code/FERMI/testInput -o /media/alex/Extra/Dropbox/Code/FERMI/testOutput -b 'freebayes' -y '/media/alex/Extra/Dropbox/Code/ReferenceGenomes/hg19.fa' -n 'This is some information.'
+
+# desktop
+#getInput -exagwj -q 120 -u 1 -v 0.75 -r 5 -f 5 -i /home/alex/Dropbox/Code/FERMI/testInput -o /home/alex/Dropbox/Code/FERMI/testOutput -b 'freebayes' -y '/home/alex/Dropbox/Code/ReferenceGenomes/hg19.fa' -n 'This is some information.'
+
+###############
+# Cluster Run #
+###############
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/CT/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs thqat will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+
+#################
+# 8.3.2016 data #
+#################
+#~/FERMI/main/fermi.py -i /vol3/home/liggettl/sequencingData/8.3.2016/unzipped -o /vol3/home/liggettl/sequencingData/8.3.2016/analysis -u 1 -v 0.6 -r 3 -c -f 1 -e -n 'This is the first run of the 8.3.2016 dataset. Everything is being run with routine settings for an initial look at the data.'
+
+########################
+# sample repeatability #
+########################
+#./sampleRepeatability.py -i /vol3/home/liggettl/sequencingData/3.21.2016/analysis/2016-05- 03_3_0.51 -o /vol3/home/liggettl/sequencingData/3.21.2016/analysis/2016-05-03_3_0.51/BlockDecomposed -s a1r1.fastq b1r1.fastq
+
+#############
+# base bias #
+#############
+#./baseChangeBias.py -i /vol3/home/liggettl/sequencingData/3.21.2016/analysis/2016-05-03_3_0.51 -o /vol3/home/liggettl/sequencingData/3.21.2016/analysis/2016-05-03_3_0.51 -s f1r1.fastq
+
+# For FINAL Results
+#getInput -exzcwjg -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These runs are being used to create a final set of data for publication that use a 55 percent AF cutoff.'
+
+# testing base bias differences
+#getInput -exzcw -q 120 -u 1 -v 0.55 -r 5 -f 4 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These run correspondes to the other three runs also submitted at similar time, and uses increasingly fewer alternate observations to allow variants through to understand the effect this might have on the differences between complementary base mutation rates but do so without duplex collapsing to understand the effect.'
+#getInput -exzcw -q 120 -u 1 -v 0.55 -r 5 -f 3 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These run correspondes to the other three runs also submitted at similar time, and uses increasingly fewer alternate observations to allow variants through to understand the effect this might have on the differences between complementary base mutation ratesbut do so without duplex collapsing to understand the effect..'
+#getInput -exzcw -q 120 -u 1 -v 0.55 -r 5 -f 2 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These run correspondes to the other three runs also submitted at similar time, and uses increasingly fewer alternate observations to allow variants through to understand the effect this might have on the differences between complementary base mutation rates.but do so without duplex collapsing to understand the effect.'
+#getInput -exzcw -q 120 -u 1 -v 0.55 -r 5 -f 1 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These run correspondes to the other three runs also submitted at similar time, and uses increasingly fewer alternate observations to allow variants through to understand the effect this might have on the differences between complementary base mutation rates.but do so without duplex collapsing to understand the effect.'
+
+# tyring new settings with most recent sequencing data to see if it brings in some more points
+#getInput -exzcgwj -q 120 -u 1 -v 0.55 -r 5 -f 1 -i /vol3/home/liggettl/sequencingData/5.8.2017/unzipped -o /vol3/home/liggettl/sequencingData/5.8.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'This is using the most updated settings to see if the reduced stringencies both brings in more variants and shifts the allele frequencies into the expected range.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 1 -i /vol3/home/liggettl/sequencingData/5.8.2017/unzipped -o /vol3/home/liggettl/sequencingData/5.8.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'The purpose of this run is to regenerate the deviator samples with the lowest most stringencies that are being used for publication.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 1 -i /vol3/home/liggettl/sequencingData/12.12.2017/unzipped -o /vol3/home/liggettl/sequencingData/12.12.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These are initial runs to get initial results.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 1 -i /vol3/home/liggettl/sequencingData/12.12.2017/unzipped/trimmed -o /vol3/home/liggettl/sequencingData/12.12.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These are trimmed reads to understand the effect on the magnitude of deviations.'
+
+#getInput -exzcwjg -q 120 -u 1 -v 0.55 -r 5 -f 1 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/unzipped/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These are trimmed reads to understand the effect on the magnitude of deviations.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/12.12.2017/unzipped -o /vol3/home/liggettl/sequencingData/12.12.2017/unzipped/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These are runs that have been processed with increased filtering stringency of 5 supporting captures to better understand the differences in C>T and G>A incidence rates.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.65 -r 10 -f 10 -i /vol3/home/liggettl/sequencingData/4.1.2018/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2018/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/hg19.fa' -n 'These runs are to play with filter conditions to try and reduce the number of mutations in the sperm samples while retaining those in blood samples.'
+
+getInput -exzcwjg -q 120 -u 1 -v 0.75 -r 5 -f 1 -i /beevol/home/liggettl/sequencingData/8.13.2018/unzipped -o /beevol/home/liggettl/sequencingData/8.13.2018/analysis -b 'freebayes' -y '/beevol/home/liggettl/refgenomes/hg19.fa' -n 'This is a test to figure out why runs are failing.'
+
+
+#####################
+# Purine/Pyrimidine #
+#####################
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/CT/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.65 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/CT/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.75 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/CT/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.85 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/CT/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.95 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/CT/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/TC/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.65 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/TC/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.75 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/TC/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.85 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/TC/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.95 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/TC/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/AG/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.65 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/AG/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.75 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/AG/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.85 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/AG/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.95 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/AG/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+
+#getInput -exzcwj -q 120 -u 1 -v 0.55 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/GA/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.65 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/GA/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.75 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/GA/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.85 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/GA/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'
+#getInput -exzcwj -q 120 -u 1 -v 0.95 -r 5 -f 5 -i /vol3/home/liggettl/sequencingData/4.1.2017/unzipped -o /vol3/home/liggettl/sequencingData/4.1.2017/analysis -b 'freebayes' -y '/vol3/home/liggettl/refgenomes/GA/hg19.fa' -n 'These runs are to create a set of analyses using artificially introduced SNPs that will either be purine or pyrimidine changes to see the effect on the AO loss depending on the base change.'

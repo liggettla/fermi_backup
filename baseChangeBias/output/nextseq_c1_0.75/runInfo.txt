@@ -1,0 +1,1 @@
+The purpose of this run is to compare variant dropout rates with previous data but instead of using the artificial hg19, this is using the original hg19.

@@ -1,0 +1,12 @@
+Input File Location: /media/alex/Extra/Dropbox/Code/FERMI/testInput
+HG Ref File Location: /media/alex/Extra/Dropbox/Code/ReferenceGenomes/hg19.fa
+Read 1: dup4_1.fastq
+Read 2: dup4_2.fastq
+Distance Stringency: 1
+Variant Threshold: 0.750000
+Supporting Reads: 5
+DP Filter: 500
+AO Filter: 5
+Read Length: 120bp
+Bad Base Substitution Used
+Duplex Collapsing Used
